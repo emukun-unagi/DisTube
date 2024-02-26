@@ -32,7 +32,7 @@ if (!args[0]) return message.channel.send(`${message.author}, 音楽の名前を
         embed.setDescription(`${maxTracks.map((track, i) => `**${i + 1}**. ${track.title} | ${track.author}`).join('\n')}\n\n **1** ~ **${maxTracks.length}** から音楽を選び番号を送ってください。キャンセルの場合は**cancel**と送ってください⬇️`);
 
         embed.setTimestamp();
-        embed.setFooter('Remixed by いるかぁぁ', message.author.avatarURL({ dynamic: true }));
+        embed.setFooter('DisTube', message.author.avatarURL({ dynamic: true }));
 
         message.channel.send({ embeds: [embed] });
 
