@@ -64,7 +64,10 @@ module.exports = {
                 return message.channel.send(`${message.author}, オーディオチャンネルに参加できませんでした。 ❌`);
             }
 
-            await message.channel.send(`音楽を読み込んでいます... 🎧`);
+            await message.channel.send(`Loading your music call. 🎧`)
+            .then(msg => {
+                msg.delete({ timeout: 50000 });
+            })
             queue.addTrack(res.tracks[0]);
 
             if (!queue.playing) await queue.play();
