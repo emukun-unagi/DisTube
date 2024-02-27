@@ -49,6 +49,14 @@ module.exports = {
 
             collector.stop();
 
+            // Display loading message and delete it after 50 seconds
+            await message.channel.send(`Loading your music call. 🎧`)
+                .then(msg => {
+                    msg.delete({ timeout: 50000 });
+                })
+                .catch();
+
+            // Play the selected track
             const res = await client.player.search(maxTracks[value - 1], {
                 requestedBy: message.member,
             });
