@@ -10,9 +10,9 @@ module.exports = {
         const queue = client.player.getQueue(message.guild.id);
 
  
-        if (!queue || !queue.playing) return message.channel.send(`${message.author}, 現在再生中の音楽はありません ❌`);
+        if (!queue || !queue.playing) return message.channel.send(`${message.author}, 現在再生中の音楽はありません`);
 
-        if (!queue.tracks[0]) return message.channel.send(`${message.author}, 再生リストに音楽がありません ❌`);
+        if (!queue.tracks[0]) return message.channel.send(`${message.author}, 再生リストに音楽がありません`);
 
         const embed = new MessageEmbed();
         const methods = ['🔁', '🔂'];
