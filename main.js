@@ -2,7 +2,6 @@ const { Player } = require('discord-player');
 const { Client, Intents, Collection } = require('discord.js');
 const { readdirSync } = require('fs');
 
-//音楽🎶
 let client = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
