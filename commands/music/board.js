@@ -20,11 +20,12 @@ module.exports = {
         embed.setColor('BLUE');
         embed.setTitle('最近再生された音楽');
 
-        recentTracks.slice(-10).forEach((track, index) => {
-            embed.addField(`**${index + 1}.**`, track);
-        });
+        const maxTracks = recentTracks.slice(-10);
 
-        embed.setDescription('番号を選んで再生するか、`cancel`でキャンセルできます。');
+        embed.setDescription(`${maxTracks.map((track, i) => `**${i + 1}**. ${track}`).join('\n')}\n\n **1** ~ **${maxTracks.length}** から音楽を選び番号を送ってください。キャンセルの場合は**cancel**と送ってください⬇️`);
+
+        embed.setTimestamp();
+        embed.setFooter('DisTube', message.author.avatarURL({ dynamic: true }));
 
         message.channel.send({ embeds: [embed] });
 
@@ -42,13 +43,13 @@ module.exports = {
 
             const value = parseInt(query.content);
 
-            if (!value || value <= 0 || value > recentTracks.length) {
-                return message.channel.send(`エラー: **1** から **${recentTracks.length}** までの番号を選択してください。または **cancel** で選択をキャンセルできます。 ❌`);
+            if (!value || value <= 0 || value > maxTracks.length) {
+                return message.channel.send(`エラー: 音楽を **1** から **${maxTracks.length}** までの番号で選択してください。または **cancel** で選択をキャンセルできます。 ❌`);
             }
 
             collector.stop();
 
-            const res = await client.player.search(recentTracks[value - 1], {
+            const res = await client.player.search(maxTracks[value - 1], {
                 requestedBy: message.member,
             });
 
