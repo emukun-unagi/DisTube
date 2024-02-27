@@ -12,7 +12,7 @@ module.exports = {
         const recentTracks = musicHistory.split('\n').filter(track => track.trim() !== '');
 
         if (recentTracks.length === 0) {
-            return message.channel.send(`${message.author}, 最近再生された音楽はありません ❌`);
+            return message.channel.send(`${message.author}, 最近再生された音楽はありません`);
         }
 
         const embed = new MessageEmbed();
@@ -20,7 +20,7 @@ module.exports = {
         embed.setTitle('最近再生された音楽');
 
         const maxTracks = recentTracks.slice(-10);
-        embed.setDescription(`${maxTracks.map((track, i) => `**${i + 1}**. ${track}`).join('\n')}\n\n **1** ~ **${maxTracks.length}** から音楽を選び番号を送ってください。キャンセルの場合は **cancel** と送ってください⬇️`);
+        embed.setDescription(`${maxTracks.map((track, i) => `**${i + 1}**. ${track}`).join('\n')}\n\n **1** ~ **${maxTracks.length}** から音楽を選び番号を送ってください。キャンセルの場合は **cancel** と送ってください`);
         embed.setFooter('DisTube', message.author.avatarURL({ dynamic: true }));
 
         message.channel.send({ embeds: [embed] });
@@ -33,14 +33,14 @@ module.exports = {
 
         collector.on('collect', async (query) => {
             if (query.content.toLowerCase() === 'cancel') {
-                message.channel.send('コマンドがキャンセルされました。 ✅');
+                message.channel.send('コマンドがキャンセルされました');
                 return collector.stop();
             }
 
             const value = parseInt(query.content);
 
             if (!value || value <= 0 || value > maxTracks.length) {
-                return message.channel.send(`エラー: **1** から **${maxTracks.length}** までの番号を選択してください。または **cancel** で選択をキャンセルできます。 ❌`);
+                return message.channel.send(`エラー: **1** から **${maxTracks.length}** までの番号を選択してください。または **cancel** で選択をキャンセルできます`);
             }
 
             collector.stop();
@@ -50,7 +50,7 @@ module.exports = {
             });
 
             if (!res || !res.tracks.length) {
-                return message.channel.send(`${message.author}, 選択された音楽が見つかりませんでした。 ❌`);
+                return message.channel.send(`${message.author}, 選択された音楽が見つかりませんでした`);
             }
 
             const queue = await client.player.createQueue(message.guild, {
@@ -61,10 +61,10 @@ module.exports = {
                 if (!queue.connection) await queue.connect(message.member.voice.channel);
             } catch {
                 await client.player.deleteQueue(message.guild.id);
-                return message.channel.send(`${message.author}, オーディオチャンネルに参加できませんでした。 ❌`);
+                return message.channel.send(`${message.author}, オーディオチャンネルに参加できませんでした`);
             }
 
-            await message.channel.send(`Loading your music call. 🎧`)
+            await message.channel.send(`音楽を読み込み中...`)
             .then(msg => {
                 msg.delete({ timeout: 50000 });
             })
@@ -75,7 +75,7 @@ module.exports = {
 
         collector.on('end', (msg, reason) => {
             if (reason === 'time') {
-                message.channel.send(`${message.author}, 選択時間が終了しました。 ❌`);
+                message.channel.send(`${message.author}, 選択時間が終了しました`);
             }
         });
     },
