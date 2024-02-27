@@ -47,7 +47,7 @@ if (!args[0]) return message.channel.send(`${message.author}, 音楽の名前を
 
             const value = parseInt(query.content);
 
-            if (!value || value <= 0 || value > maxTracks.length) return message.channel.send(`select a song **1** to **${maxTracks.length}** and write send or type **cancel** and cancel selection.`);
+            if (!value || value <= 0 || value > maxTracks.length) return message.channel.send(`**1** から **${maxTracks.length}** までの番号を選択してください。または **cancel** で選択をキャンセルできます`);
 
             collector.stop();
 
