@@ -1,6 +1,7 @@
 const { Player } = require('discord-player');
 const { Client, Intents, Collection } = require('discord.js');
 const { readdirSync } = require('fs');
+const fs = require('fs');
 
 let client = new Client({
     intents: [
@@ -51,6 +52,13 @@ player.on('trackStart', (queue, track) => {
     embed.setColor('RANDOM');
     embed.setDescription(`**${track.title}**を__**${queue.connection.channel.name}**__で再生します🎧`);
     queue.metadata.send({ embeds: [embed] });
+
+    const musicInfo = `${track.title} - ${track.url}\n`;
+    fs.appendFile('music.txt', musicInfo, (err) => {
+        if (err) {
+            console.error(`Error writing to music.txt: ${err}`);
+        }
+    });
 });
 
 player.on('trackAdd', (queue, track) => {
