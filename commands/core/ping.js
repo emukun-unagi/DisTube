@@ -8,7 +8,7 @@ module.exports = {
     execute(client, message) {
       const embed = new MessageEmbed();
       embed.setColor('RANDOM');
-      embed.setDescription(`**${client.ws.ping}ms** 🛰️`);
+      embed.setDescription(`**${client.ws.ping}ms**`);
       message.channel.send({ embeds: [embed] });
     },
 };
