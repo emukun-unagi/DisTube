@@ -50,7 +50,7 @@ player.on('trackStart', (queue, track) => {
     if (!client.config.opt.loopMessage && queue.repeatMode !== 0) return;
     const embed = new MessageEmbed();
     embed.setColor('RANDOM');
-    embed.setDescription(`**${track.title}**を__**${queue.connection.channel.name}**__で再生します🎧`);
+    embed.setDescription(`**${track.title}**を__**${queue.connection.channel.name}**__で再生します`);
     queue.metadata.send({ embeds: [embed] });
 
     const musicInfo = `${track.title} - ${track.url}\n`;
@@ -64,20 +64,20 @@ player.on('trackStart', (queue, track) => {
 player.on('trackAdd', (queue, track) => {
 const embed = new MessageEmbed();
     embed.setColor('GREEN');
-    embed.setDescription(`**${track.title}** プレイリストに追加しました ✅`);
+    embed.setDescription(`**${track.title}** プレイリストに追加しました`);
     queue.metadata.send({ embeds: [embed] });
 });
 
 player.on('botDisconnect', (queue) => {
-    queue.metadata.send('誰かにボイスチャンネルから追い出されたため、プレイリストがすべて消去されました ❌');
+    queue.metadata.send('誰かにボイスチャンネルから追い出されたため、プレイリストがすべて消去されました');
 });
 
 player.on('channelEmpty', (queue) => {
-    queue.metadata.send('誰も居なくなったためボイスチャンネルから抜けました ❌')
+    queue.metadata.send('誰も居なくなったためボイスチャンネルから抜けました')
 });
 
 player.on('queueEnd', (queue)=> {
-    queue.metadata.send('すべてのプレイリストを再生しました ✅');
+    queue.metadata.send('すべてのプレイリストを再生しました');
 });
 
 const express = require("express");
