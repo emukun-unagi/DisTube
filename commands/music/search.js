@@ -43,7 +43,7 @@ if (!args[0]) return message.channel.send(`${message.author}, 音楽の名前を
         });
 
        collector.on('collect', async (query) => {
-            if (query.content.toLowerCase() === 'cancel') return message.channel.send(`Call cancelled.`) && collector.stop();
+            if (query.content.toLowerCase() === 'cancel') return message.channel.send(`コマンドがキャンセルされました`) && collector.stop();
 
             const value = parseInt(query.content);
 
