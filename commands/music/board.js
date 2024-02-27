@@ -40,7 +40,7 @@ module.exports = {
             const value = parseInt(query.content);
 
             if (!value || value <= 0 || value > maxTracks.length) {
-                return message.channel.send(`エラー: **1** から **${maxTracks.length}** までの番号を選択してください。または **cancel** で選択をキャンセルできます`);
+                return message.channel.send(`**1** から **${maxTracks.length}** までの番号を選択してください。または **cancel** で選択をキャンセルできます`);
             }
 
             collector.stop();
