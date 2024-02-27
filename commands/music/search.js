@@ -55,7 +55,7 @@ if (!args[0]) return message.channel.send(`${message.author}, 音楽の名前を
                 if (!queue.connection) await queue.connect(message.member.voice.channel);
             } catch {
                 await client.player.deleteQueue(message.guild.id);
-                return message.channel.send(`${message.author}, I can't join audio channel.`);
+                return message.channel.send(`${message.author}, オーディオチャンネルに参加できませんでした`);
             }
 
             await message.channel.send(`音楽を読み込み中...`)
