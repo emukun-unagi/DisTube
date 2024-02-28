@@ -4,7 +4,7 @@ const ytdl = require('ytdl-core');
 module.exports = {
     name: 'movie',
     aliases: ['video'],
-    utilisation: '{prefix}movie <urlまたは名前>',
+    utilisation: '{prefix}movie',
     voiceChannel: true,
 
     async execute(client, message, args) {
@@ -40,7 +40,11 @@ module.exports = {
         const embed = new MessageEmbed();
         embed.setColor('BLUE');
         embed.setTitle('動画情報');
-        embed.setDescription(`**タイトル:** ${videoInfo.title}\n**投稿者:** ${videoInfo.author.name}\n**再生回数:** ${videoInfo.views}\n**評価:** ${videoInfo.likes} 👍 / ${videoInfo.dislikes} 👎`);
+
+        // Check if videoInfo.author is defined before accessing the name property
+        const authorName = videoInfo.author ? videoInfo.author.name : 'Unknown';
+
+        embed.setDescription(`**タイトル:** ${videoInfo.title}\n**投稿者:** ${authorName}\n**再生回数:** ${videoInfo.views}\n**評価:** ${videoInfo.likes} 👍 / ${videoInfo.dislikes} 👎`);
 
         const connection = await voiceChannel.join();
         const dispatcher = connection.play(ytdl(query, { filter: 'audioonly' }));
