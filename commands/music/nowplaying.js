@@ -27,7 +27,7 @@ const trackDuration = timestamp.progress == 'Forever' ? 'Endless (Live)' : track
         embed.setDescription(`音量 **${queue.volume}%**\n再生時間 **${trackDuration}**\nループ **${methods[queue.repeatMode]}**\n${track. requestedBy}`);
 
         embed.setTimestamp();
-        embed.setFooter('Remixed by いるかぁぁ', message.author.avatarURL({ dynamic: true }));
+        embed.setFooter('DisTube', message.author.avatarURL({ dynamic: true }));
 
         const saveButton = new MessageButton();
 
