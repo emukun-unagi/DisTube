@@ -1,40 +1,60 @@
-const { QueryType } = require('discord-player');
-const { setTimeout } = require('timers/promises');
+const { MessageEmbed } = require('discord.js');
+const ytdl = require('ytdl-core');
 
 module.exports = {
     name: 'movie',
-    aliases: ['m'],
-    utilisation: '{prefix}movie [video name/URL]',
+    aliases: ['video'],
+    utilisation: '{prefix}movie <urlまたは名前>',
     voiceChannel: true,
 
     async execute(client, message, args) {
-        if (!args[0]) return message.channel.send(`${message.author}, 動画の名前またはURLを指定してください`);
-
         const query = args.join(' ');
-        const res = await client.player.search(query, {
-            requestedBy: message.member,
-            searchJapanese: QueryType.AUTO
-        });
 
-        if (!res || !res.tracks.length) return message.channel.send(`${message.author}, 動画が見つかりませんでした`);
-
-        const queue = await client.player.createQueue(message.guild, {
-            metadata: message.channel
-        });
-
-        try {
-            if (!queue.connection) await queue.connect(message.member.voice.channel);
-        } catch {
-            await client.player.deleteQueue(message.guild.id);
-            return message.channel.send(`${message.author}, ボイスチャンネルに接続できませんでした`);
+        if (!query) {
+            return message.channel.send(`${message.author}, 動画のURLまたは名前を指定してください`);
         }
 
-        await queue.connection.play(res.tracks[0].url, { type: 'opus' });
+        const voiceChannel = message.member.voice.channel;
+        if (!voiceChannel) {
+            return message.channel.send(`${message.author}, ボイスチャンネルに参加してください`);
+        }
 
-        await message.channel.send(`動画を読み込み中...`)
-            .then(msg => {
-                msg.delete({ timeout: 20000 });
-            })
-            .catch();
+        const permissions = voiceChannel.permissionsFor(message.client.user);
+        if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
+            return message.channel.send(`${message.author}, ボイスチャンネルに接続する権限がありません`);
+        }
+
+        let videoInfo;
+        try {
+            if (ytdl.validateURL(query)) {
+                videoInfo = await ytdl.getInfo(query);
+            } else {
+                const searchResults = await ytdl.search(query, { limit: 1 });
+                videoInfo = searchResults[0];
+            }
+        } catch (error) {
+            console.error(error);
+            return message.channel.send(`${message.author}, 動画情報の取得中にエラーが発生しました`);
+        }
+
+        const embed = new MessageEmbed();
+        embed.setColor('BLUE');
+        embed.setTitle('動画情報');
+        embed.setDescription(`**タイトル:** ${videoInfo.title}\n**投稿者:** ${videoInfo.author.name}\n**再生回数:** ${videoInfo.views}\n**評価:** ${videoInfo.likes} 👍 / ${videoInfo.dislikes} 👎`);
+
+        const connection = await voiceChannel.join();
+        const dispatcher = connection.play(ytdl(query, { filter: 'audioonly' }));
+
+        message.channel.send({ embeds: [embed] });
+
+        dispatcher.on('finish', () => {
+            voiceChannel.leave();
+        });
+
+        dispatcher.on('error', (error) => {
+            console.error(error);
+            voiceChannel.leave();
+            message.channel.send(`${message.author}, 動画の再生中にエラーが発生しました`);
+        });
     },
 };
