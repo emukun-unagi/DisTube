@@ -4,7 +4,7 @@ const ytdl = require('ytdl-core');
 module.exports = {
     name: 'movie',
     aliases: ['video'],
-    utilisation: '{prefix}movie',
+    utilisation: '{prefix}movie [movie name/URL]',
     voiceChannel: true,
 
     async execute(client, message, args) {
