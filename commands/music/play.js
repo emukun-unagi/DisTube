@@ -28,7 +28,7 @@ if (!args[0]) return message.channel.send(`${message.author}, 検索したい音
             return message.channel.send(`${message.author}, ボイスチャンネルに接続できませんでした`);
         }
 
-        await message.channel.send(`${res.playlist ? 'Your Playlist' : 'Your Track'} Loading... 🎧`)
+        await message.channel.send(`${res.playlist ? 'Your Playlist' : 'Your Track'} 音楽を読み込み中...`)
         .then(msg => {
                 msg.delete({ timeout: 20000 });
             })
