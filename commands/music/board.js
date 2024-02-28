@@ -20,7 +20,7 @@ module.exports = {
         embed.setTitle('最近再生された音楽');
 
         const maxTracks = recentTracks.slice(-10);
-        embed.setDescription(`${maxTracks.map((track, i) => `**${i + 1}**. ${track.title}`).join('\n')}\n\n **1** ~ **${maxTracks.length}** から音楽を選び番号を送ってください。キャンセルの場合は **cancel** と送ってください`);
+        embed.setDescription(`${maxTracks.map((track, i) => `**${i + 1}**. ${track}`).join('\n')}\n\n **1** ~ **${maxTracks.length}** から音楽を選び番号を送ってください。キャンセルの場合は **cancel** と送ってください`);
         embed.setFooter('DisTube', message.author.avatarURL({ dynamic: true }));
 
         message.channel.send({ embeds: [embed] });
